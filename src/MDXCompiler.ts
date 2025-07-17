@@ -1,7 +1,7 @@
 import type { CompileOptions } from "@mdx-js/mdx";
 import { compileMDX } from "next-mdx-remote/rsc";
 
-import { Effect } from "effect";
+import { Data, Effect } from "effect";
 import mdxMermaid from "mdx-mermaid";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeMdxImportMedia from "rehype-mdx-import-media";
@@ -9,10 +9,10 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 
-class MDXCompileError {
-  readonly _tag = "MDXCompileError";
-  constructor(readonly error: unknown) {}
-}
+class MDXCompileError extends Data.TaggedError("MDXCompileError")<{
+  message: string;
+  cause?: unknown;
+}> {}
 
 // TODO: add components as needed
 const components = {};
@@ -51,7 +51,11 @@ export class MDXCompiler extends Effect.Service<MDXCompiler>()(
               },
               components: { ...components },
             }),
-          catch: (error) => new MDXCompileError(error),
+          catch: (error) =>
+            new MDXCompileError({
+              message: `MDX compilation failed: ${error instanceof Error ? error.message : String(error)}`,
+              cause: error,
+            }),
         }),
       );
 

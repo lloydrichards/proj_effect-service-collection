@@ -6,6 +6,7 @@
     "clean": "git clean -xdf .cache dist node_modules",
     "dev": "bun ./scratchpad",
     "lint": "eslint src/",
+    "test": "vitest run",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
@@ -23,6 +24,7 @@
   },
   "devDependencies": {
     "@effect/language-service": "^0.27.2",
+    "@effect/vitest": "^0.24.1",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.31.0",
     "@types/node": "^24.0.14",
@@ -33,7 +35,9 @@
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-only-warn": "^1.1.0",
     "prettier-plugin-organize-imports": "^4.1.0",
+    "test": "^3.3.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.37.0"
+    "typescript-eslint": "^8.37.0",
+    "vitest": "^3.2.4"
   }
 }
