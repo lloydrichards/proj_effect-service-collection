@@ -1,0 +1,63 @@
+import type { CompileOptions } from "@mdx-js/mdx";
+import { compileMDX } from "next-mdx-remote/rsc";
+
+import { Effect } from "effect";
+import mdxMermaid from "mdx-mermaid";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
+import rehypeMdxImportMedia from "rehype-mdx-import-media";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
+
+class MDXCompileError {
+  readonly _tag = "MDXCompileError";
+  constructor(readonly error: unknown) {}
+}
+
+// TODO: add components as needed
+const components = {};
+
+const mdxOptions: CompileOptions = {
+  remarkPlugins: [remarkGfm, mdxMermaid],
+  rehypePlugins: [
+    rehypeMdxImportMedia,
+    rehypeSlug,
+    [rehypePrettyCode, { keepBackground: false, theme: "synthwave-84" }],
+    [
+      rehypeAutolinkHeadings,
+      {
+        behavior: "append",
+        properties: {
+          className: ["subheading-anchor"],
+          ariaLabel: "Link to section",
+        },
+      },
+    ],
+  ],
+};
+
+export class MDXCompiler extends Effect.Service<MDXCompiler>()(
+  "app/MDXCompiler",
+  {
+    succeed: () => {
+      const use = Effect.fn("MDXCompiler.use")(<T>(source: string) =>
+        Effect.tryPromise({
+          try: () =>
+            compileMDX<T>({
+              source,
+              options: {
+                parseFrontmatter: true,
+                mdxOptions,
+              },
+              components: { ...components },
+            }),
+          catch: (error) => new MDXCompileError(error),
+        }),
+      );
+
+      return {
+        use,
+      } as const;
+    },
+  },
+) {}
