@@ -1,0 +1,26 @@
+{
+  "name": "proj_effect-service-collection",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "clean": "git clean -xdf .cache dist node_modules",
+    "dev": "bun ./scratchpad",
+    "lint": "eslint src/",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.31.0",
+    "@types/node": "^24.0.14",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "eslint": "^9.31.0",
+    "eslint-config-next": "15.4.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-only-warn": "^1.1.0",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.37.0"
+  }
+}
