@@ -8,8 +8,14 @@
     "lint": "eslint src/",
     "type-check": "tsc --noEmit"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@effect/experimental": "^0.52.2",
+    "@effect/platform": "^0.88.1",
+    "@effect/platform-bun": "^0.74.0",
+    "effect": "^3.16.16"
+  },
   "devDependencies": {
+    "@effect/language-service": "^0.27.2",
     "@eslint/eslintrc": "^3.3.1",
     "@eslint/js": "^9.31.0",
     "@types/node": "^24.0.14",
