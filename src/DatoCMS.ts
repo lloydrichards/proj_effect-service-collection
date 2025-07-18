@@ -2,7 +2,7 @@ import {
   executeQuery,
   executeQueryWithAutoPagination,
 } from "@datocms/cda-client";
-import { Config, Data, Effect, Layer } from "effect";
+import { Config, Data, Effect, Layer, Redacted } from "effect";
 
 type QueryVariables = Record<string, unknown>;
 
@@ -12,7 +12,7 @@ class DatoFailure extends Data.TaggedError("DatoFailure")<{
 }> {}
 
 const DatoContentConfig = Config.all({
-  token: Config.string("DATOCMS_API_TOKEN"),
+  token: Config.redacted("DATOCMS_API_TOKEN"),
   environment: Config.string("DATOCMS_API_ENV").pipe(
     Config.withDefault("main"),
   ),
@@ -35,6 +35,7 @@ export class DatoCMS extends Effect.Service<DatoCMS>()("app/DatoCMS", {
         try: () =>
           executeQuery(query, {
             ...config,
+            token: Redacted.value(config.token),
             variables: options?.variables,
           }),
         catch: (error) =>
@@ -54,6 +55,7 @@ export class DatoCMS extends Effect.Service<DatoCMS>()("app/DatoCMS", {
         try: () =>
           executeQueryWithAutoPagination(query, {
             ...config,
+            token: Redacted.value(config.token),
             variables: options?.variables,
           }),
         catch: (error) =>
