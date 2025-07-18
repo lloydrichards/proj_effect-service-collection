@@ -10,6 +10,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@datocms/cda-client": "^0.2.7",
     "@effect/experimental": "^0.52.2",
     "@effect/platform": "^0.88.1",
     "@effect/platform-bun": "^0.74.0",
