@@ -49,9 +49,9 @@ const CommitSummary = Schema.Struct({
       signature: Schema.NullOr(Schema.String),
       payload: Schema.NullOr(Schema.String),
       verified_at: Schema.NullOr(
-        Schema.Union(Schema.Date, Schema.DateFromSelf),
+        Schema.Union(Schema.Date, Schema.DateFromSelf)
       ),
-    }),
+    })
   ),
 });
 
@@ -113,14 +113,14 @@ export class GitHubCommit extends Schema.Class<GitHubCommit>("GitHubCommit")({
       sha: Schema.String,
       url: Schema.String,
       html_url: Schema.String,
-    }),
+    })
   ),
 }) {
   static Array = Schema.Array(this);
 }
 
 export class GitHubCommitDetails extends Schema.Class<GitHubCommitDetails>(
-  "GitHubCommitDetails",
+  "GitHubCommitDetails"
 )({
   ...GitHubCommit.fields,
   stats: Schema.Struct({
@@ -140,7 +140,7 @@ export class GitHubCommitDetails extends Schema.Class<GitHubCommitDetails>(
       raw_url: Schema.String,
       contents_url: Schema.String,
       patch: Schema.optional(Schema.String),
-    }),
+    })
   ),
 }) {
   static Array = Schema.Array(this);
@@ -199,7 +199,7 @@ const Organization = Schema.Struct({
   site_admin: Schema.Boolean,
 });
 export class GitHubRepository extends Schema.Class<GitHubRepository>(
-  "GitHubRepository",
+  "GitHubRepository"
 )({
   id: Schema.Number,
   node_id: Schema.String,
@@ -277,7 +277,7 @@ export class GitHubRepository extends Schema.Class<GitHubRepository>(
       spdx_id: Schema.String,
       url: Schema.String,
       node_id: Schema.String,
-    }),
+    })
   ),
   allow_forking: Schema.Boolean,
   is_template: Schema.Boolean,
@@ -315,7 +315,7 @@ export class GitHubRepository extends Schema.Class<GitHubRepository>(
 }) {}
 
 export class GitHubFileContent extends Schema.Class<GitHubFileContent>(
-  "GitFileContent",
+  "GitFileContent"
 )({
   name: Schema.String,
   path: Schema.String,
@@ -341,7 +341,7 @@ const DateFromSeconds = Schema.transform(Schema.Number, Schema.DateFromSelf, {
 });
 
 export class GitHubRateLimit extends Schema.Class<GitHubRateLimit>(
-  "GitHubRateLimit",
+  "GitHubRateLimit"
 )({
   rate: Schema.Struct({
     limit: Schema.Number,

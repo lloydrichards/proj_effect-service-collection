@@ -18,9 +18,9 @@ export const HarvestHttpClient = Effect.Do.pipe(
           HttpClientRequest.acceptJson,
           HttpClientRequest.bearerToken(config.accessToken),
           HttpClientRequest.setHeader("Harvest-Account-Id", config.accountId),
-          HttpClientRequest.setHeader("User-Agent", "Harvest API"),
-        ),
-      ),
-    ),
-  ),
+          HttpClientRequest.setHeader("User-Agent", "Harvest API")
+        )
+      )
+    )
+  )
 );

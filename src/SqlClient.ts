@@ -9,53 +9,56 @@ export class SqlError extends Schema.TaggedError<SqlError>()("SqlError", {
 
 const SqlClientConfig = Config.all({
   filename: Config.string("SQL_LITE_FILENAME").pipe(
-    Config.withDefault(":memory:"),
+    Config.withDefault(":memory:")
   ),
 });
 
 export class SqlClient extends Effect.Service<SqlClient>()("SqlClient", {
   scoped: Effect.gen(function* () {
     const config = yield* SqlClientConfig;
+
     const db = yield* Effect.acquireRelease(
       Effect.sync(() => new Database(config.filename)),
-      (db) => Effect.sync(() => db.close()),
+      (sql) => Effect.sync(() => sql.close())
     );
 
     const use = Effect.fn("SqlClient.use")(
-      <A>(f: (db: Database) => A): Effect.Effect<A, SqlError> =>
+      <A>(f: (sql: Database) => A): Effect.Effect<A, SqlError> =>
         Effect.try({
           try: () => f(db),
           catch: (cause) => new SqlError({ cause }),
-        }),
+        })
     );
 
     const query = <A = unknown>(
-      sql: string,
-      ...params: Array<SqlParam>
-    ): Effect.Effect<Array<A>, SqlError> =>
-      use((db) => {
+      sqlStr: string,
+      ...params: SqlParam[]
+    ): Effect.Effect<A[], SqlError> =>
+      use((sql) => {
         if (params.length === 0) {
-          const stmt = db.query(sql);
+          const stmt = sql.query(sqlStr);
           return stmt.all() as A[];
         }
-        const stmt = db.query(sql);
+        const stmt = sql.query(sqlStr);
         return stmt.all(...params) as A[];
-      }).pipe(Effect.withSpan("SqlClient.query", { attributes: { sql } }));
+      }).pipe(
+        Effect.withSpan("SqlClient.query", { attributes: { sql: sqlStr } })
+      );
 
     const stream = <A = unknown>(
-      sql: string,
-      ...params: Array<SqlParam>
+      sqlStr: string,
+      ...params: SqlParam[]
     ): Stream.Stream<A, SqlError> =>
-      use((db) => {
+      use((sql) => {
         if (params.length === 0) {
-          const stmt = db.query(sql);
+          const stmt = sql.query(sqlStr);
           return Stream.fromIterable(stmt.iterate() as Iterable<A>);
         }
-        const stmt = db.query(sql);
+        const stmt = sql.query(sqlStr);
         return Stream.fromIterable(stmt.iterate(...params) as Iterable<A>);
       }).pipe(
         Stream.unwrap,
-        Stream.withSpan("SqlClient.stream", { attributes: { sql } }),
+        Stream.withSpan("SqlClient.stream", { attributes: { sql: sqlStr } })
       );
 
     return {
@@ -66,13 +69,11 @@ export class SqlClient extends Effect.Service<SqlClient>()("SqlClient", {
   }),
 }) {}
 
-export const SqlClientLive = SqlClient.Default;
-
 export const SqlClientTest = Layer.succeed(
   SqlClient,
   SqlClient.make({
     use: () => Effect.die("Test use not implemented"),
     query: () => Effect.die("Test query not implemented"),
     stream: () => Stream.die("Test stream not implemented"),
-  }),
+  })
 );

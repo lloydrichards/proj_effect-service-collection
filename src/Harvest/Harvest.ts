@@ -1,10 +1,10 @@
-import { Project, TeamMember, TimeEntry } from "@/types/Harvest";
 import {
   FetchHttpClient,
   HttpClientRequest,
   HttpClientResponse,
 } from "@effect/platform";
 import { Array, Effect, pipe, RateLimiter } from "effect";
+import { Project, TeamMember, TimeEntry } from "@/types/Harvest";
 import { HarvestHttpClient } from "./HarvestHttpClient";
 
 const HarvestRateLimiter = RateLimiter.make({
@@ -19,17 +19,17 @@ export class Harvest extends Effect.Service<Harvest>()("app/Harvest", {
 
     const getPageEntries = (
       { year, user }: { year: number; user?: string },
-      page: number,
+      page: number
     ) =>
       pipe(
         HttpClientRequest.get("/time_entries").pipe(
           HttpClientRequest.setUrlParam("from", `${year}-01-01`),
           HttpClientRequest.setUrlParam("to", `${year}-12-31`),
           HttpClientRequest.setUrlParam("page", page.toString()),
-          user ? HttpClientRequest.setUrlParam("user_id", user) : (a) => a,
+          user ? HttpClientRequest.setUrlParam("user_id", user) : (a) => a
         ),
         httpsClient.execute,
-        Effect.andThen(HttpClientResponse.schemaBodyJson(TimeEntry.Page)),
+        Effect.andThen(HttpClientResponse.schemaBodyJson(TimeEntry.Page))
       );
 
     const allEntries = Effect.fn("Harvest.allEntries")(
@@ -40,30 +40,30 @@ export class Harvest extends Effect.Service<Harvest>()("app/Harvest", {
             Effect.andThen(({ total_pages }) =>
               Effect.all(
                 Array.makeBy(total_pages, (x) =>
-                  limiter(getPageEntries({ year, user }, x + 1)),
+                  limiter(getPageEntries({ year, user }, x + 1))
                 ),
-                { concurrency: "unbounded" },
-              ),
+                { concurrency: "unbounded" }
+              )
             ),
             Effect.map((entries) =>
-              entries.flatMap(({ time_entries }) => time_entries),
-            ),
-          ),
-        ),
+              entries.flatMap(({ time_entries }) => time_entries)
+            )
+          )
+        )
     );
 
     const allProjects = Effect.fn("Harvest.allProjects")(() =>
       httpsClient.get("/projects").pipe(
         Effect.andThen(HttpClientResponse.schemaBodyJson(Project.Page)),
-        Effect.andThen((response) => response.projects),
-      ),
+        Effect.andThen((response) => response.projects)
+      )
     );
 
     const allTeamMembers = Effect.fn("Harvest.allTeamMembers")(() =>
       httpsClient.get("/users").pipe(
         Effect.andThen(HttpClientResponse.schemaBodyJson(TeamMember.Page)),
-        Effect.andThen((response) => response.users),
-      ),
+        Effect.andThen((response) => response.users)
+      )
     );
 
     return {

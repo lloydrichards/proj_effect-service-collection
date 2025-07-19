@@ -1,6 +1,6 @@
-import { DevToolsLive } from "@/DevTool";
-import { SqlClient, SqlClientLive } from "@/SqlClient";
 import { Console, Effect, Layer, ManagedRuntime, Stream } from "effect";
+import { DevToolsLive } from "@/DevTool";
+import { SqlClient } from "@/SqlClient";
 
 const main = Effect.gen(function* () {
   yield* Console.log("\n✍️ Scratchpad\n\n");
@@ -19,7 +19,7 @@ const main = Effect.gen(function* () {
 
 const MainLayer = Layer.mergeAll(
   DevToolsLive,
-  SqlClientLive,
+  SqlClient.Default
   // Add more layers as needed
 );
 

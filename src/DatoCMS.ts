@@ -14,10 +14,10 @@ class DatoFailure extends Data.TaggedError("DatoFailure")<{
 const DatoContentConfig = Config.all({
   token: Config.redacted("DATOCMS_API_TOKEN"),
   environment: Config.string("DATOCMS_API_ENV").pipe(
-    Config.withDefault("main"),
+    Config.withDefault("main")
   ),
   includeDrafts: Config.boolean("DATOCMS_INCLUDE_DRAFTS").pipe(
-    Config.withDefault(true),
+    Config.withDefault(true)
   ),
 });
 
@@ -26,14 +26,14 @@ export class DatoCMS extends Effect.Service<DatoCMS>()("app/DatoCMS", {
     const config = yield* DatoContentConfig;
 
     const query = (
-      query: string,
+      queryStr: string,
       options?: {
         variables?: QueryVariables;
-      },
+      }
     ) =>
       Effect.tryPromise({
         try: () =>
-          executeQuery(query, {
+          executeQuery(queryStr, {
             ...config,
             token: Redacted.value(config.token),
             variables: options?.variables,
@@ -46,14 +46,14 @@ export class DatoCMS extends Effect.Service<DatoCMS>()("app/DatoCMS", {
       });
 
     const queryWithPagination = (
-      query: string,
+      queryStr: string,
       options?: {
         variables?: QueryVariables;
-      },
+      }
     ) =>
       Effect.tryPromise({
         try: () =>
-          executeQueryWithAutoPagination(query, {
+          executeQueryWithAutoPagination(queryStr, {
             ...config,
             token: Redacted.value(config.token),
             variables: options?.variables,
@@ -81,5 +81,5 @@ export const DatoCMSTest = Layer.succeed(
     query: () => Effect.die("Test query not implemented"),
     queryWithPagination: () =>
       Effect.die("Test query with pagination not implemented"),
-  }),
+  })
 );

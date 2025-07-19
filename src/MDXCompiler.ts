@@ -1,8 +1,7 @@
 import type { CompileOptions } from "@mdx-js/mdx";
-import { compileMDX } from "next-mdx-remote/rsc";
-
 import { Data, Effect } from "effect";
 import mdxMermaid from "mdx-mermaid";
+import { compileMDX } from "next-mdx-remote/rsc";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeMdxImportMedia from "rehype-mdx-import-media";
 import rehypePrettyCode from "rehype-pretty-code";
@@ -56,12 +55,12 @@ export class MDXCompiler extends Effect.Service<MDXCompiler>()(
               message: `MDX compilation failed: ${error instanceof Error ? error.message : String(error)}`,
               cause: error,
             }),
-        }),
+        })
       );
 
       return {
         use,
       } as const;
     },
-  },
+  }
 ) {}

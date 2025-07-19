@@ -129,7 +129,7 @@ export class TimeEntry extends Schema.Class<TimeEntry>("TimeEntry")({
     Schema.Struct({
       id: Schema.Int,
       number: Schema.String,
-    }),
+    })
   ),
   external_reference: Schema.NullOr(Schema.String),
 }) {

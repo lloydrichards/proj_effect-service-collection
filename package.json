@@ -5,7 +5,8 @@
   "scripts": {
     "clean": "git clean -xdf .cache dist node_modules",
     "dev": "bun ./scratchpad",
-    "lint": "eslint src/",
+    "format": "ultracite format",
+    "lint": "ultracite lint",
     "test": "vitest run",
     "type-check": "tsc --noEmit"
   },
@@ -24,22 +25,15 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.1.2",
     "@effect/language-service": "^0.27.2",
     "@effect/vitest": "^0.24.1",
-    "@eslint/eslintrc": "^3.3.1",
-    "@eslint/js": "^9.31.0",
     "@types/bun": "^1.2.18",
     "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "eslint": "^9.31.0",
-    "eslint-config-next": "15.4.1",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-only-warn": "^1.1.0",
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "test": "^3.3.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.37.0",
+    "ultracite": "5.0.46",
     "vitest": "^3.2.4"
   }
 }
