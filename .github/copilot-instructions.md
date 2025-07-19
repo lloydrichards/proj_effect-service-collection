@@ -1,71 +1,50 @@
 ---
-description: Ultracite Rules - AI-Ready Formatter and Linter
+description: Effect Service Collection
 applyTo: "**/*.{ts,tsx,js,jsx}"
 ---
 
 # Project Context
 
-Ultracite enforces strict type safety, accessibility standards, and consistent
-code quality for JavaScript/TypeScript projects using Biome's lightning-fast
-formatter and linter.
+This repository contains a collection of simple, reusable services built with
+Effect. These services are designed to be common components of applications that
+can be combined to create more complex logic.
 
 ## Key Principles
 
-- Zero configuration required
-- Subsecond performance
 - Maximum type safety
-- AI-friendly code generation
+- Functional and composable
+- Robust error handling
+- Testable and maintainable
 
 ## Before Writing Code
 
-1. Analyze existing patterns in the codebase
-2. Consider edge cases and error scenarios
-3. Follow the rules below strictly
-4. Validate accessibility requirements
+1. Analyze existing patterns in the codebase.
+2. Consider edge cases and error scenarios.
+3. Follow the rules below strictly.
 
 ## Rules
 
-### Accessibility (a11y)
+### Effect Best Practices
 
-- Don't use `accessKey` attribute on any HTML element.
-- Don't set `aria-hidden="true"` on focusable elements.
-- Don't add ARIA roles, states, and properties to elements that don't support
-  them.
-- Don't use distracting elements like `<marquee>` or `<blink>`.
-- Only use the `scope` prop on `<th>` elements.
-- Don't assign non-interactive ARIA roles to interactive HTML elements.
-- Make sure label elements have text content and are associated with an input.
-- Don't assign interactive ARIA roles to non-interactive HTML elements.
-- Don't assign `tabIndex` to non-interactive HTML elements.
-- Don't use positive integers for `tabIndex` property.
-- Don't include "image", "picture", or "photo" in img alt prop.
-- Don't use explicit role property that's the same as the implicit/default role.
-- Make static elements with click handlers use a valid role attribute.
-- Always include a `title` element for SVG elements.
-- Give all elements requiring alt text meaningful information for screen
-  readers.
-- Make sure anchors have content that's accessible to screen readers.
-- Assign `tabIndex` to non-interactive HTML elements with
-  `aria-activedescendant`.
-- Include all required ARIA attributes for elements with ARIA roles.
-- Make sure ARIA properties are valid for the element's supported roles.
-- Always include a `type` attribute for button elements.
-- Make elements with interactive roles and handlers focusable.
-- Give heading elements content that's accessible to screen readers (not hidden
-  with `aria-hidden`).
-- Always include a `lang` attribute on the html element.
-- Always include a `title` attribute for iframe elements.
-- Accompany `onClick` with at least one of: `onKeyUp`, `onKeyDown`, or
-  `onKeyPress`.
-- Accompany `onMouseOver`/`onMouseOut` with `onFocus`/`onBlur`.
-- Include caption tracks for audio and video elements.
-- Use semantic elements instead of role attributes in JSX.
-- Make sure all anchors are valid and navigable.
-- Ensure all ARIA properties (`aria-*`) are valid.
-- Use valid, non-abstract ARIA roles for elements with ARIA roles.
-- Use valid ARIA state and property values.
-- Use valid values for the `autocomplete` attribute on input elements.
-- Use correct ISO language/country codes for the `lang` attribute.
+- **Type Safety:** Always leverage Effect's types such as `Effect`, `Layer`, and
+  `Context`. Prefer type-safe solutions and avoid any usage of `any` or unsafe
+  casts. Use `Schema` for parsing and validating unknown data.
+- **Functional Paradigm:** Favor pure functions and immutable data structures.
+  Avoid side effects in function definitions unless they are managed via Effect
+  constructs.
+- **Error Handling:** Use `Effect.fail`, `Effect.catchAll`, and related
+  combinators for error management. Never throw raw errors; all errors should be
+  handled within the `Effect` type.
+- **Composability:** Structure code using Effect combinators (`flatMap`, `map`,
+  `zip`, etc.) for effectful computations. Use `pipe` to create readable and
+  maintainable compositions.
+- **Dependency Injection:** Use `Layer` to define dependencies and their
+  implementations. Use `Context` to manage and access services throughout the
+  application. Compose layers to build the application's dependency graph.
+- **Testing:** Write tests using `@effect/vitest` for seamless integration with
+  Vitest. Use `it.effect` for testing `Effect` workflows, `TestClock` for
+  time-dependent logic, and `it.scoped` for resource management. Provide mock
+  implementations of services using `Layer.succeed` for isolated testing.
 
 ### Code Complexity and Quality
 
@@ -129,27 +108,6 @@ formatter and linter.
 - Don't use 8 and 9 escape sequences in string literals.
 - Don't use literal numbers that lose precision.
 
-### React and JSX Best Practices
-
-- Don't use the return value of React.render.
-- Make sure all dependencies are correctly specified in React hooks.
-- Make sure all React hooks are called from the top level of component
-  functions.
-- Don't forget key props in iterators and collection literals.
-- Don't destructure props inside JSX components in Solid projects.
-- Don't define React components inside other components.
-- Don't use event handlers on non-interactive elements.
-- Don't assign to React component props.
-- Don't use both `children` and `dangerouslySetInnerHTML` props on the same
-  element.
-- Don't use dangerous JSX props.
-- Don't use Array index in keys.
-- Don't insert comments as text nodes.
-- Don't assign JSX properties multiple times.
-- Don't add extra closing tags for components without children.
-- Use `<>...</>` instead of `<Fragment>...</Fragment>`.
-- Watch out for possible "wrong" semicolons inside JSX elements.
-
 ### Correctness and Safety
 
 - Don't assign a value to itself.
@@ -177,7 +135,7 @@ formatter and linter.
 - Don't use bitwise operators.
 - Don't use expressions where the operation doesn't change the value.
 - Make sure Promise-like statements are handled appropriately.
-- Don't use **dirname and **filename in the global scope.
+- Don't use `__dirname` and `__filename` in the global scope.
 - Prevent import cycles.
 - Don't use configured elements.
 - Don't hardcode sensitive data like API keys and tokens.
@@ -333,14 +291,6 @@ formatter and linter.
 - Make sure to use the digits argument with Number#toFixed().
 - Make sure to use the "use strict" directive in script files.
 
-### Next.js Specific Rules
-
-- Don't use `<img>` elements in Next.js projects.
-- Don't use `<head>` elements in Next.js projects.
-- Don't import next/document outside of pages/\_document.jsx in Next.js
-  projects.
-- Don't use the next/head module in pages/\_document.js on Next.js projects.
-
 ### Testing Best Practices
 
 - Don't use export or module.exports in test files.
@@ -349,28 +299,58 @@ formatter and linter.
   function call.
 - Don't use disabled tests.
 
-## Common Tasks
+## Examples
 
-- `npx ultracite init` - Initialize Ultracite in your project
-- `npx ultracite format` - Format and fix code automatically
-- `npx ultracite lint` - Check for issues without fixing
-
-## Example: Error Handling
+### Error Handling with Effect
 
 ```typescript
-// ✅ Good: Comprehensive error handling
-try {
-  const result = await fetchData();
-  return { success: true, data: result };
-} catch (error) {
-  console.error("API call failed:", error);
-  return { success: false, error: error.message };
-}
+import { Effect } from "effect";
 
-// ❌ Bad: Swallowing errors
+// ✅ Good: Comprehensive error handling with Effect
+const fetchData = Effect.tryPromise({
+  try: () => fetch("/api/data"),
+  catch: (error) => new Error(`API call failed: ${error}`),
+});
+
+const program = Effect.match(fetchData, {
+  onFailure: (error) => ({ success: false, error: error.message }),
+  onSuccess: (data) => ({ success: true, data }),
+});
+
+// ❌ Bad: Swallowing errors or using try/catch blocks
 try {
-  return await fetchData();
+  const result = await fetch("/api/data");
+  // ...
 } catch (e) {
-  console.log(e);
+  console.log(e); // Error is not handled in a structured way
 }
 ```
+
+### Using Effect.Service
+
+```typescript
+import { FileSystem } from "@effect/platform";
+import { NodeFileSystem } from "@effect/platform-node";
+import { Effect } from "effect";
+
+// Define a Cache service
+class Cache extends Effect.Service<Cache>()("app/Cache", {
+  // Define how to create the service
+  effect: Effect.gen(function* () {
+    const fs = yield* FileSystem.FileSystem;
+    const lookup = (key: string) => fs.readFileString(`cache/${key}`);
+    return { lookup } as const;
+  }),
+  // Specify dependencies
+  dependencies: [NodeFileSystem.layer],
+}) {}
+```
+
+## Resources
+
+- [Effect/llms.txt](https://effect.website/llms.txt) — a listing of the
+  available files
+- [Effect/llms-full.txt](https://effect.website/llms-full.txt) — complete
+  documentation for Effect
+- [Effect/llms-small.txt](https://effect.website/llms-small.txt) — compressed
+  documentation for use with smaller context windows
