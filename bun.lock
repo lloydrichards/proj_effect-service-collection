@@ -6,7 +6,7 @@
       "dependencies": {
         "@datocms/cda-client": "^0.2.7",
         "@effect/experimental": "^0.52.2",
-        "@effect/platform": "^0.88.1",
+        "@effect/platform": "^0.88.2",
         "@effect/platform-bun": "^0.74.0",
         "effect": "^3.16.16",
         "mdx-mermaid": "^2.0.3",
@@ -84,7 +84,7 @@
 
     "@effect/language-service": ["@effect/language-service@0.27.2", "", { "bin": { "effect-language-service": "cli.js" } }, "sha512-AFgxoIZ6xpfwCZp7+1mj3f1HsK3Yqe9I0iUfpf8Iu2gl9F3dmdFiOvuoLRVSkfVsK2BTQr8kv2zPi53Lst2haw=="],
 
-    "@effect/platform": ["@effect/platform@0.88.1", "", { "dependencies": { "@opentelemetry/semantic-conventions": "^1.33.0", "find-my-way-ts": "^0.1.6", "msgpackr": "^1.11.4", "multipasta": "^0.2.5" }, "peerDependencies": { "effect": "^3.16.14" } }, "sha512-12cRbqva8AFwEqCpa3d9nMmhvEYWk/lh/vo8Um4iOCFyTbc+ASe0zsI2MLJAVf1K0/TmpB0w+byEZLx6qCaxyw=="],
+    "@effect/platform": ["@effect/platform@0.88.2", "", { "dependencies": { "@opentelemetry/semantic-conventions": "^1.33.0", "find-my-way-ts": "^0.1.6", "msgpackr": "^1.11.4", "multipasta": "^0.2.7" }, "peerDependencies": { "effect": "^3.16.16" } }, "sha512-JnPCfQz1y8ZED2OBxU82iFBT43fXrl26N+PEFtLWn1EedG6C6AwFvwbpFkICF3G2Qj/ZZ153xZaAxtVOPu4WTg=="],
 
     "@effect/platform-bun": ["@effect/platform-bun@0.74.0", "", { "dependencies": { "@effect/platform-node-shared": "^0.44.0", "multipasta": "^0.2.5" }, "peerDependencies": { "@effect/cluster": "^0.43.0", "@effect/platform": "^0.88.1", "@effect/rpc": "^0.65.1", "@effect/sql": "^0.42.0", "effect": "^3.16.14" } }, "sha512-4iULiRh5KMw5pXHFyaV94+hXYlJmTOBDb7UFnoLp21S9L2sgJWqw4S3W9NYH9vJKfYIZp4RqlHq4pxSFkgsiFA=="],
 
